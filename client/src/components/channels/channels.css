@@ -1,0 +1,8 @@
+.Channels {
+    /* width: 100%; */
+    border: 1px;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 10px;
+    display: inline-block;
+}

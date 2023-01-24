@@ -8,15 +8,19 @@ import { NotificationsProvider } from '@mantine/notifications';
 import { io } from 'socket.io-client';
 import { useEffect } from 'react';
 
-let socket: any;
+let socket;
 
 const CONNECTION_PORT = "localhost:3001/";
 
 function App() {
 
-	// useEffet(() => {
+	useEffect(() => {
+		socket = io[CONNECTION_PORT];
+	}, [CONNECTION_PORT])
 
-	// },[])
+	const connectToRoom = () => {
+		socket.emit()
+	}
 
   return (
     <MantineProvider withNormalizeCSS withGlobalStyles>

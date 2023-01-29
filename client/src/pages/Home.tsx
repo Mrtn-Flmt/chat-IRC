@@ -33,10 +33,10 @@ const Home = () => {
     return (_id);
   }
 
-  const getMessages = () => {
-    axios.get(`http://localhost:3001/getMessages/${uid}`, { params: { uid: uid } })
+  const  getMessages = async () => {
+    await axios.get(`http://localhost:3001/getMessages/${uid}`, { params: { uid: uid } })
       .then(({data}) => setMessages(data))
-      .then((res) => {
+      .then(() => {
         console.log(messages)
       })
     localStorage.removeItem('roomSelected')

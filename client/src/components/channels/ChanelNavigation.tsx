@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from 'react';
-import { Tabs, Flex, Button, Text, Group, Modal, TextInput } from '@mantine/core';
+import { Tabs, Flex, Button, Text, Group, Modal, TextInput, ScrollArea } from '@mantine/core';
 import axios from 'axios';
 import Channels from './Channels';
 import './chanelNavigation.css'
@@ -99,11 +99,15 @@ const ChanelNagivation: FC<Props> = ({cards, setRoom}) => {
 					Ajouter
 				</Button>
 			</Modal>
-			<Channels
-				cards={channels} 
-				setRoom={setRoom}
-				deleteRoom={deleteRoom}
-			/>
+			<ScrollArea style={{
+				height:"80vh"
+			}}>
+				<Channels
+					cards={channels} 
+					setRoom={setRoom}
+					deleteRoom={deleteRoom}
+				/>
+			</ScrollArea>
 			<Group position="center">
 				<Button onClick={() => setOpened(true)}>Ajouter un channel</Button>
 			</Group>

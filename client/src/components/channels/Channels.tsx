@@ -10,7 +10,7 @@ type Props = {
 		_id: string
 	}[],
     setRoom:(_id: string) => {},
-    deleteRoom:(_id: string) => {},
+    deleteRoom:(_id: string) => {}
 }
 
 const Channels: FC<Props> = ({cards, setRoom, deleteRoom}) =>  { 

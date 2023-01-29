@@ -79,7 +79,6 @@ async function addChannel(title, res) {
 }
 
 app.get('/getMessages/:uid', (req, res) => {
-    console.log("ok")
     const uid = req.params.uid;
     console.log(uid);
     console.log('get Message 🔥🔥🔥');
@@ -92,7 +91,7 @@ async function getMessages(uid) {
     await client.connect();
     const db =  client.db('ClusterIRC');
     const collection = db.collection('messages');
-    const cursor = collection.find({});
+    const cursor = collection.find();
     // const messages = [];
   
     // cursor.forEach((message) => {
@@ -102,7 +101,7 @@ async function getMessages(uid) {
     //   res.json(messages);
     //   client.close();
     // });
-    console.log(cursor);
+    // console.log(cursor);
     return cursor.toArray();
 }
 
@@ -147,10 +146,25 @@ app.post('/register', async (req, res) => {
 })
 
 app.post('/sendMessage', (req, res) => {
-    // console.log(req.body.uid);
-    // console.log(req.body.message);
-    res.send(req.body.message);
+    sendMessage(req.body.uid, req.body.message, req.body.roomSelected);
+    res.send("ok")
 })
+
+async function sendMessage(uid, message, roomSelected) {
+    await client.connect();
+    const db = client.db('ClusterIRC');
+    const collection = db.collection('messages');
+    if (uid && message && roomSelected) {
+        await collection.insertMany([{
+            uid: uid,
+            message: message,
+            roomSelected: roomSelected,
+        }]).then((data) => {
+            console.log(data)
+        })
+    }
+
+}
 
 async function addUser(email, password, nickname, res) {
     const user = { email: email, password: password, nickname: nickname }

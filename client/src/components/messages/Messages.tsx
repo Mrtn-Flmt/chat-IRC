@@ -38,8 +38,22 @@ export default function Messages() {
     )
   } else {
     return (
-      <>
-      <Text color={"blue"}></Text></>
+      <Flex style={{
+        width:"100%",
+        height:"80vh",
+        justifyContent:"center",
+        alignItems:"center"
+      }}>
+        <Flex style={{
+          width:"70%",
+          backgroundColor:"grey",
+          padding:"20px",
+          margin:"20px",
+          borderRadius:"15px"
+        }}>
+          <Text align='center' size={50} color={"white"}>Veuillez Sélectionner ou créer une room.</Text>
+        </Flex>
+      </Flex>
     )
   }
 }

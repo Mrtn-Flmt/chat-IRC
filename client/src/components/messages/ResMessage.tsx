@@ -10,7 +10,9 @@ export default function ResMessage() {
   const uid = localStorage.getItem('uid');
   const roomSelected = localStorage.getItem('roomSelected');
 
-	// const socket = io("http://localhost:3001");
+	const socket = io("http://localhost:3001");
+
+  var isSend = ""
   
   // useEffect(() => {
   //   socket.on("receive_message", (data) => {
@@ -20,15 +22,19 @@ export default function ResMessage() {
   // },[socket])
   
   function sendButtonClicked() {
-    // socket.connect()
-    if (message.length !== 0)
-    axios.post('http://localhost:3001/sendMessage', {
-      uid: uid,
-      message: message,
-    }).then((response) => {
-        // socket.emit("send_message", message);
-        console.log(response.data[0].message);
-      })
+    if (message.length > 0) {
+      socket.connect()
+      if (message.length !== 0)
+      axios.post('http://localhost:3001/sendMessage', {
+        uid: uid,
+        message: message,
+        roomSelected: roomSelected,
+      }).then((response) => {
+          socket.emit("send_message", message);
+          console.log(response.data);
+          setMessage("");
+        })
+    }
   }
 
   const handleChange = (event: any) => {
@@ -49,6 +55,7 @@ export default function ResMessage() {
         height: "10%",
       }}>
         <Textarea
+          value={message}
           onChange={handleChange}
           placeholder="Votre message"
           radius="md"

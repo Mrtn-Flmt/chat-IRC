@@ -1,23 +1,30 @@
-import React, { Component, useState, useEffect } from 'react'
+import React, { Component, useState, useEffect, FC } from 'react'
 import Channel from './Channel'
 import axios from 'axios'
 import { Card, Image, Text, Badge, Button, Group, Flex } from '@mantine/core';
 import './channels.css'
 
-const Channels = () => {
-   const [cards, setCards] = useState<{title: string, _id: string}[]>([])
+type Props = {
+    cards: {
+		title: string,
+		_id: string
+	}[],
+    setRoom:(_id: string) => {},
+    deleteRoom:(_id: string) => {},
+}
 
-   useEffect(() => {
-    axios.get('http://localhost:3001/getChannels')
-    .then(({data}) => setCards(data))
-    },[])
+const Channels: FC<Props> = ({cards, setRoom, deleteRoom}) =>  { 
 
-
+    const channels = cards;
 
     return (
         <Card className="Channels" style={{display:"block"}}>
-            {cards.map((card) => {
-                return( <Channel name={card.title} _id={card._id}  /> )
+            {channels.map((card: { title: string; _id: string; }) => {
+                return( <Channel 
+                            name={card.title} 
+                            _id={card._id} 
+                            setRoom={setRoom} 
+                            deleteRoom={deleteRoom}/> )
             })}
         </Card>
     )

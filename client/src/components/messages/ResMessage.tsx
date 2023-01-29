@@ -2,29 +2,31 @@ import React from 'react'
 import { Flex, Textarea, Button } from '@mantine/core'
 import { useEffect, useState } from 'react'
 import axios from 'axios';
-import { io } from "socket.io-client";
+import { io } from 'socket.io-client';
+import e from 'express';
 
 export default function ResMessage() {
   const [message, setMessage] = useState("");
 
-	const socket = io("/");
-	
-	socket.on("disconnect", () => {
-		console.log(socket.id); // undefined
-	});
-
+	const socket = io("http://localhost:3001");
+  
+  useEffect(() => {
+    socket.on("receive_message", (data) => {
+      alert(data.message);
+      localStorage.setItem('newMessage', message);
+    })
+  },[socket])
+  
   function sendButtonClicked() {
+    socket.connect()
     if (message.length !== 0)
-      axios.post('http://localhost:3001/sendMessage', {
-        uid: "01020304",
-        message: message,
-      }).then((response) => {
+    axios.post('http://localhost:3001/sendMessage', {
+      uid: "01020304",
+      message: message,
+    }).then((response) => {
+        socket.emit("send_message", message);
         console.log(response.data[0].message);
       })
-
-		socket.on("connect", () => {
-			console.log(socket.id);
-		});
   }
 
   const handleChange = (event: any) => {

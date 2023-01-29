@@ -1,17 +1,44 @@
-import { useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { Tabs, Flex, Button, Text, Group, Modal, TextInput } from '@mantine/core';
 import axios from 'axios';
 import Channels from './Channels';
 import './chanelNavigation.css'
 import { showNotification } from '@mantine/notifications';
-import { Socket } from 'socket.io-client';
+import { ButtonProps } from '@material-ui/core';
 
-function ChanelNagivation() {
+type Props = {
+	cards: {
+		title: string,
+		_id: string
+	}[],
+	setRoom:(_id: string) => {},
+}
+
+const ChanelNagivation: FC<Props> = ({cards, setRoom}) => {
+
+	const channels = cards;
 
 	const uid = localStorage.getItem('uid' || "uid");
 
 	const [titleChannel, setTiteChannel] = useState("");
 	const [opened, setOpened] = useState(false);
+
+	const deleteRoom = (_id: string) => {
+		var newCards = cards;
+		console.log("delete   Room");
+		var i;
+		for (i = 0; i < newCards.length; i++) {
+		  if (newCards[i]._id === _id) {
+			newCards.splice(i, 1);
+			axios.delete(`http://localhost:3001/deleteChannel/${_id}`, { params: { _id: _id } })
+			.then(() => {
+				console.log(_id + " is deleted to bd");
+			});
+			cards = newCards;
+		  }
+		}
+		return (_id);
+	  }
 
 	function addChannel() {
 		setOpened(false);
@@ -29,12 +56,8 @@ function ChanelNagivation() {
 		}).catch(error => {
 			console.log(error);
 		})
-		// window.location.reload();
+		channels.push({title: titleChannel, _id: uid!.toString()})
 	}
-
-	useEffect(() => {
-
-	})
 
   return (
 		<div className="bodyNavigation">
@@ -76,12 +99,15 @@ function ChanelNagivation() {
 					Ajouter
 				</Button>
 			</Modal>
-				<Channels />
-				<Group position="center">
-					<Button onClick={() => setOpened(true)}>Ajouter un channel</Button>
-				</Group>
-
-				<br></br>
+			<Channels
+				cards={channels} 
+				setRoom={setRoom}
+				deleteRoom={deleteRoom}
+			/>
+			<Group position="center">
+				<Button onClick={() => setOpened(true)}>Ajouter un channel</Button>
+			</Group>
+			<br></br>
 		</div>
   );
 }

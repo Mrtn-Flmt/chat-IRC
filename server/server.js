@@ -10,8 +10,8 @@ const { ObjectId } = require('mongodb');
 
 const client = new MongoClient(process.env.MONGO_URL);
 
-app.use(express.json());
 app.use(cors());
+app.use(express.json());
 const PORT = 3001;
 const server = http.createServer(app);
 
@@ -24,16 +24,16 @@ server.listen(PORT, (error) => {
 
 const io = new Server(server, {
     cors: {
-        origin: "*"
+        origin: "*",
+        methods:["GET", "POST"]
     }
 });
 
-io.on("connection", (socket) => {
+io.on("connect", (socket) => {
     console.log(socket.id);
     
-    socket.on('join_room', (data) => {
-        socket.join(data);
-        console.log('User joined Room: ' + data);
+    socket.on('send_message', (data) => {
+        console.log(data);
     })
 
     socket.on("disconnect", () => {
@@ -108,6 +108,7 @@ app.delete('/deleteChannel/:_id', (req, res) => {
     const myid = req.params._id;
     console.log("delete: " + myid);
     deleteChannel(myid)
+    res.send(ok)
 })
 
 app.post('/register', async (req, res) => {
@@ -118,8 +119,8 @@ app.post('/register', async (req, res) => {
 })
 
 app.post('/sendMessage', (req, res) => {
-    console.log(req.body.uid);
-    console.log(req.body.message);
+    // console.log(req.body.uid);
+    // console.log(req.body.message);
     res.send(req.body.message);
 })
 
@@ -178,6 +179,7 @@ async function deleteChannel(_id) {
     .then(result => {
       console.log(`${result.deletedCount} documents ont été supprimés.`);
       client.close();
+      result.send("ok");
     })
     .catch(err => console.error(err));
 }

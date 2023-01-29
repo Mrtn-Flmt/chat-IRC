@@ -8,27 +8,25 @@ import { io } from 'socket.io-client';
 
 type Props = {
     name: string,
-    _id: string
+    _id: string,
+    setRoom:(_id: string) => {},
+    deleteRoom:(_id: string) => {},
 }
 
-const Channel: FC<Props> = ({name, _id}) =>  { 
+const Channel: FC<Props> = ({name, _id, setRoom, deleteRoom}) =>  {
 
-    useEffect(() => {
-    })
+    const tmp = _id;
 
-    function deleteIsClicked(event: any) {
-        axios.delete(`http://localhost:3001/deleteChannel/${_id}`, { params: { _id: _id } })
-        .then(() => {
-            console.log(_id + " is deleted to bd");
-        });
-        window.location.reload();
+    function deleteIsClicked() {
+        deleteRoom(_id);
     }
 
     function selectIsClicked() {
         console.log(`select: ${_id}   -   ${name}`)
-        
+        localStorage.setItem('room', _id);
+        setRoom(tmp);
     }
-
+    
     function editIsClicked() {
         console.log(`edit: ${_id}   -   ${name}`)
     }

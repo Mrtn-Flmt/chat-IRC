@@ -8,18 +8,18 @@ import { NotificationsProvider } from '@mantine/notifications';
 import { io } from 'socket.io-client';
 import { useEffect } from 'react';
 
-let socket;
+// let socket;
 
 const CONNECTION_PORT = "localhost:3001/";
 
 function App() {
 
-	useEffect(() => {
-		socket = io[CONNECTION_PORT];
-	}, [CONNECTION_PORT])
+	// useEffect(() => {
+	// 	socket = io[CONNECTION_PORT];
+	// }, [CONNECTION_PORT])
 
 	const connectToRoom = () => {
-		socket.emit()
+		// socket.emit()
 	}
 
   return (

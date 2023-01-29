@@ -6,15 +6,12 @@ export default function Messages() {
   const [messages, setMessages] = useState([""]);
   var i = 0;
 
-  useEffect(() => {
-
-  });
   return (
     <>
       <Flex direction={"column"} style={{
-        // height:"100%"
+        height:"100vh"
       }}>
-        < Message self="me" />
+        {/* < Message self="me" />
         < Message self="you" />
         < Message self="me" />
         < Message self="you" />
@@ -31,7 +28,7 @@ export default function Messages() {
         < Message self="me" />
         < Message self="me" />
         < Message self="me" />
-        < Message self="me" />
+        < Message self="me" /> */}
       </Flex>
       {/* {messages.map(message => ( */}
 

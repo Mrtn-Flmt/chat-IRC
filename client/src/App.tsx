@@ -5,22 +5,12 @@ import Register from './pages/Register';
 import Profile from './pages/Profile';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { NotificationsProvider } from '@mantine/notifications';
-import { io } from 'socket.io-client';
-import { useEffect } from 'react';
 
 // let socket;
 
 const CONNECTION_PORT = "localhost:3001/";
 
 function App() {
-
-	// useEffect(() => {
-	// 	socket = io[CONNECTION_PORT];
-	// }, [CONNECTION_PORT])
-
-	const connectToRoom = () => {
-		// socket.emit()
-	}
 
   return (
     <MantineProvider withNormalizeCSS withGlobalStyles>

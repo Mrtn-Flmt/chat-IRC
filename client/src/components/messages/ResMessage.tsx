@@ -7,24 +7,26 @@ import e from 'express';
 
 export default function ResMessage() {
   const [message, setMessage] = useState("");
+  const uid = localStorage.getItem('uid');
+  const roomSelected = localStorage.getItem('roomSelected');
 
-	const socket = io("http://localhost:3001");
+	// const socket = io("http://localhost:3001");
   
-  useEffect(() => {
-    socket.on("receive_message", (data) => {
-      alert(data.message);
-      localStorage.setItem('newMessage', message);
-    })
-  },[socket])
+  // useEffect(() => {
+  //   socket.on("receive_message", (data) => {
+  //     alert(data.message);
+  //     localStorage.setItem('newMessage', message);
+  //   })
+  // },[socket])
   
   function sendButtonClicked() {
-    socket.connect()
+    // socket.connect()
     if (message.length !== 0)
     axios.post('http://localhost:3001/sendMessage', {
-      uid: "01020304",
+      uid: uid,
       message: message,
     }).then((response) => {
-        socket.emit("send_message", message);
+        // socket.emit("send_message", message);
         console.log(response.data[0].message);
       })
   }

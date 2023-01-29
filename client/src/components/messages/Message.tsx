@@ -4,16 +4,19 @@ import { Flex, Text } from '@mantine/core'
 export default function Message(props: any) {
   const [align, setAlign] = useState("");
   const [color, setColor] = useState("");
-  console.log(props.self);
+  const [zone, setZone] = useState("");
+  // console.log(props.self);
   const txt = "jzjehjzahehjzahjehzajejahjhezajhkejkhejhjhezahjehjaze"
 
   useEffect(() => {
     if (props.self === 'me') {
       setAlign("end");
       setColor("green")
+      setZone("end")
     } else if (props.self === 'you') {
       setAlign("start");
       setColor("lightblue")
+      setZone("start")
     }
   }, [])
 
@@ -29,7 +32,11 @@ export default function Message(props: any) {
       alignSelf: align,
     }
     }>
-      <Text >{txt}</Text>
+      <Flex style={{
+        width:"100%"
+      }}>
+        <Text >{txt}</Text>
+      </Flex>
     </Flex >
   )
 }

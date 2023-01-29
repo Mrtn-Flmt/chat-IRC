@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import axios from 'axios';
 import { io } from 'socket.io-client';
 import e from 'express';
+import { showNotification } from '@mantine/notifications';
 
 export default function ResMessage() {
   const [message, setMessage] = useState("");
@@ -22,7 +23,7 @@ export default function ResMessage() {
   // },[socket])
   
   function sendButtonClicked() {
-    if (message.length > 0) {
+    if (message.length > 0 && roomSelected) {
       socket.connect()
       if (message.length !== 0)
       axios.post('http://localhost:3001/sendMessage', {
@@ -34,6 +35,26 @@ export default function ResMessage() {
           console.log(response.data);
           setMessage("");
         })
+    } else {
+      if (!roomSelected) {
+        showNotification({
+          title: 'Room inconnue',
+          message: 'Veuillez selectionner une room ! 🤥',
+          styles: (theme) => ({
+            root: {
+              backgroundColor: theme.colors.red[6],
+              borderColor: theme.colors.red[6],
+              '&::before': { backgroundColor: theme.white },
+            },
+            title: { color: theme.white },
+            description: { color: theme.white },
+            closeButton: {
+              color: theme.white,
+              '&:hover': { backgroundColor: theme.colors.red[7] },
+            },
+          })
+        })
+      }
     }
   }
 

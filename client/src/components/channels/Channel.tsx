@@ -23,6 +23,7 @@ const Channel: FC<Props> = ({name, _id, setRoom, deleteRoom}) =>  {
 
     function selectIsClicked() {
         console.log(`select: ${_id}   -   ${name}`)
+        localStorage.setItem('roomName', name);
         setRoom(tmp);
     }
     

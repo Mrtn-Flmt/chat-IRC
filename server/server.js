@@ -10,10 +10,10 @@ const { ObjectId } = require('mongodb');
 
 const client = new MongoClient(process.env.MONGO_URL);
 
+app.use(cors());
 app.use(express.json());
 const PORT = 3001;
 const server = http.createServer(app);
-app.use(cors());
 
 server.listen(PORT, (error) => {
     if (!error)
@@ -78,30 +78,18 @@ async function addChannel(title, res) {
     })
 }
 
-app.get('/getMessages/:uid', (req, res) => {
-    const uid = req.params.uid;
-    console.log(uid);
-    console.log('get Message 🔥🔥🔥');
-    const messages = getMessages(uid);
+app.get('/getMessages', async (req, res) => {
+    console.log(`get  all messages`)
+    const messages = await getMessages();
+    console.log(messages)
     res.send(messages);
-})
+});
 
-async function getMessages(uid) {
-    console.log(uid);
+async function getMessages() {
     await client.connect();
     const db =  client.db('ClusterIRC');
     const collection = db.collection('messages');
-    const cursor = collection.find();
-    // const messages = [];
-  
-    // cursor.forEach((message) => {
-    //   messages.push(message);
-    // }, (err) => {
-  
-    //   res.json(messages);
-    //   client.close();
-    // });
-    // console.log(cursor);
+    const cursor = collection.find({});
     return cursor.toArray();
 }
 
@@ -196,7 +184,6 @@ async function getUserData(email, password) {
     const db =  client.db('ClusterIRC');
     const collection = db.collection('users');
     const cursor = collection.find({email:email, password: password});
-    console.log("ookokok😘")
     return cursor.toArray();
 }
 
@@ -220,7 +207,6 @@ async function deleteChannel(_id) {
     })
     .then(result => {
       console.log(`${result.deletedCount} documents ont été supprimés.`);
-      client.close();
       result.send("ok");
     })
     .catch(err => console.error(err));

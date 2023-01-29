@@ -5,7 +5,6 @@ export default function Message(props: any) {
   const [align, setAlign] = useState("");
   const [color, setColor] = useState("");
   const [zone, setZone] = useState("");
-  // console.log(props.self);
   const txt = "jzjehjzahehjzahjehzajejahjhezajhkejkhejhjhezahjehjaze"
 
   useEffect(() => {

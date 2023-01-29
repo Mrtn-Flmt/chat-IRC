@@ -1,10 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, FC } from 'react';
 import Message from './Message';
 import { Flex, Text } from '@mantine/core'
 
-export default function Messages() {
-  const [messages, setMessages] = useState([""]);
-  var i = 0;
+type Props = {
+  messages: {
+    uid: string,
+    txt: string
+  }[]
+}
+
+const Messages: FC<Props> = ({messages}) =>  { 
+  // const [allMessages, setMessages] = useState(messages);
+  const allMessages = messages
+  console.log(JSON.stringify(allMessages))
+  console.log(allMessages);
   const roomSelected = localStorage.getItem('roomSelected');
   if (roomSelected) {
     return (
@@ -18,22 +27,11 @@ export default function Messages() {
           < Message self="you" />
           < Message self="you" />
           < Message self="me" />
-          < Message self="me" />
-          < Message self="me" />
-          < Message self="me" />
-          < Message self="me" />
-          < Message self="you" />
-          < Message self="me" />
-          < Message self="you" />
-          < Message self="you" />
-          < Message self="me" />
-          < Message self="me" />
-          < Message self="me" />
-          < Message self="me" />
         </Flex>
-        {/* {messages.map(message => ( */}
-  
-        {/* ))} */}
+        {/* {allMessages.map((message) => {
+            < Message self="me" txt={message.txt} />
+          }
+        )} */}
       </>
     )
   } else {
@@ -47,7 +45,7 @@ export default function Messages() {
         <Flex style={{
           width:"70%",
           backgroundColor:"grey",
-          padding:"20px",
+          padding:"30px",
           margin:"20px",
           borderRadius:"15px"
         }}>
@@ -57,3 +55,5 @@ export default function Messages() {
     )
   }
 }
+
+export default Messages

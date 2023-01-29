@@ -12,17 +12,28 @@ const Home = () => {
   const uid = localStorage.getItem('uid');
 
   const [cards, setCards] = useState<{title: string, _id: string}[]>([])
-  const [messages, setMessages] = useState<{message: string, uid: string, nickname: string}[]>([])
+  const [messages, setMessages] = useState<{message: string, uid: string}[]>([])
 
   const [roomSelected, setRoomSelected] = useState("");
+
+  // GET CHANNEL
 
   useEffect(() => {
     axios.get('http://localhost:3001/getChannels')
       .then(({data}) => setCards(data))
   },[])
 
+
+  // GET MESSAGE 
+
   useEffect(() => {
-    console.log("set: " + roomSelected)
+    axios.get('http://localhost:3001/getMessages')
+      .then(({data}) => {
+        setMessages(data.toString([]));
+      })
+  },[])
+
+  useEffect(() => {
     localStorage.setItem('roomSelected', roomSelected);
   }, [roomSelected])
 
@@ -30,23 +41,18 @@ const Home = () => {
     setRoomSelected(_id);
     localStorage.setItem('roomSelected', _id);
     console.log("set Room selected in home: " + roomSelected);
+    axios.get('http://localhost:3001/getMessages').then((res) => {
+      console.log(res.data);
+      setMessages(res.data);
+    })
     return (_id);
-  }
-
-  const  getMessages = async () => {
-    await axios.get(`http://localhost:3001/getMessages/${uid}`, { params: { uid: uid } })
-      .then(({data}) => setMessages(data))
-      .then(() => {
-        console.log(messages)
-      })
-    localStorage.removeItem('roomSelected')
   }
 
   return (
     <Flex direction={"column"} style={{backgroundColor:"lightGrey", height:"100vh"}}>
       <Navigation />
       <Grid style={{margin:0, height:"100%"}}>
-        
+
         <Grid.Col style={{ backgroundColor:"black"}} span={2}>
           <Flex
             // bg="lightgrey"
@@ -74,7 +80,7 @@ const Home = () => {
               // height:"100%"
             }}
             >
-              <ContentMessage />
+              <ContentMessage messages={messages} />
           </Flex>
         </Grid.Col>
 
@@ -91,7 +97,6 @@ const Home = () => {
             <Title size={25} style={{textAlign:"center", color:"white"}}>Users</Title>
           </Flex>
         </Grid.Col>
-        <Button onClick={getMessages}>Get messagee</Button>
 
       </Grid>
       

@@ -19,15 +19,15 @@ const Navigation = () => {
     if (auth) {
         return (
             <Grid display={"flex"}>
-                <Grid.Col  style={{textAlign:"end", marginBottom:"10px", marginTop:"10px"}} span={2}>
-                    <NavLink to="/">IRC</NavLink>
+                <Grid.Col  style={{textAlign:"center", marginBottom:"10px", marginTop:"10px"}} span={2}>
                 </Grid.Col>
 
                 <Grid.Col style={{textAlign:"end", marginBottom:"10px", marginTop:"10px"}} span={6}>
-                    <NavLink to="/Profile">Profile</NavLink>
+                    <NavLink to="/">IRC</NavLink>
                 </Grid.Col>
                 
                 <Grid.Col style={{marginBottom:"10px", marginTop:"10px"}} span={4}>
+                    <NavLink to="/Profile">Profile</NavLink>
                     <NavLink onClick={() => {
                         setDisconnected();
                     }} to="/login">logout</NavLink>

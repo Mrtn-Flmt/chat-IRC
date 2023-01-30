@@ -46,20 +46,21 @@ const ChanelNagivation: FC<Props> = ({cards, setRoom}) => {
 		axios.post('http://localhost:3001/addChannel', {
 				title: titleChannel
 		}).then((res) => {
-			console.log(res)
-			axios.post('http://localhost:3001/addChannelInUser', {
-				rid: res.data.toString(),
-				uid: uid,
-			}).then((response) => {
-				console.log("addchannelInUserOk " + response);
-			})
+			console.log(res.data + "👍")
+			localStorage.setItem('roomSelected', res.data);
+			setRoom(res.data);
 		}).catch(error => {
 			console.log(error);
 		})
 		channels.push({title: titleChannel, _id: uid!.toString()})
 	}
 
-  return (
+	function leaveChan() {
+		localStorage.removeItem('roomSelected')
+		window.location.reload()
+	}
+
+	return (
 		<div className="bodyNavigation">
 			<Modal
 				opened={opened}
@@ -109,11 +110,12 @@ const ChanelNagivation: FC<Props> = ({cards, setRoom}) => {
 				/>
 			</ScrollArea>
 			<Group position="center">
-				<Button onClick={() => setOpened(true)}>Ajouter un channel</Button>
+				<Button fullWidth color={"blue"} onClick={() => setOpened(true)}>Ajouter un channel</Button>
+				<Button fullWidth color={"red"} onClick={() => leaveChan}>Quitter le channel</Button>
 			</Group>
 			<br></br>
 		</div>
-  );
+	);
 }
 
 export default ChanelNagivation

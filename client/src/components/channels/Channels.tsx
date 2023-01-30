@@ -21,10 +21,10 @@ const Channels: FC<Props> = ({cards, setRoom, deleteRoom}) =>  {
         <Card className="Channels" style={{display:"block"}}>
             {channels.map((card: { title: string; _id: string; }) => {
                 return( 
-                    <Channel 
+                    <Channel
                         name={card.title} 
                         _id={card._id} 
-                        setRoom={setRoom} 
+                        setRoom={setRoom}
                         deleteRoom={deleteRoom}
                     /> 
                 )

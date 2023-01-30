@@ -34,7 +34,7 @@ export default function Message(props: any) {
       <Flex style={{
         width:"100%"
       }}>
-        <Text >{txt}</Text>
+        <Text >{props.txt}</Text>
       </Flex>
     </Flex >
   )

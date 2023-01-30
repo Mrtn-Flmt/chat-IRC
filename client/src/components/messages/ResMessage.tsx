@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { FC } from 'react'
 import { Flex, Textarea, Button } from '@mantine/core'
 import { useEffect, useState } from 'react'
 import axios from 'axios';
@@ -6,14 +6,16 @@ import { io } from 'socket.io-client';
 import e from 'express';
 import { showNotification } from '@mantine/notifications';
 
-export default function ResMessage() {
+type Props = {
+  sendMessage:(txt:string, uid:string) => {}
+}
+
+const ResMessage: FC<Props> = ({sendMessage}) =>  { 
   const [message, setMessage] = useState("");
-  const uid = localStorage.getItem('uid');
+  const uid = localStorage.getItem('uid') || "uid";
   const roomSelected = localStorage.getItem('roomSelected');
 
 	const socket = io("http://localhost:3001");
-
-  var isSend = ""
   
   // useEffect(() => {
   //   socket.on("receive_message", (data) => {
@@ -23,18 +25,44 @@ export default function ResMessage() {
   // },[socket])
   
   function sendButtonClicked() {
+    if (message.includes('/nickname')) {
+      console.log("nickname set " + message);
+      localStorage.setItem('nickname', message)
+      setMessage("");
+      showNotification({
+        title: 'Nickname changed',
+        message: 'Votre nickname a bien été modifié ! 🤥',
+        styles: (theme) => ({
+          root: {
+            backgroundColor: theme.colors.green[6],
+            borderColor: theme.colors.green[6],
+            '&::before': { backgroundColor: theme.white },
+          },
+          title: { color: theme.white },
+          description: { color: theme.white },
+          closeButton: {
+            color: theme.white,
+            '&:hover': { backgroundColor: theme.colors.green[7] },
+          },
+        })
+      })
+      return
+    } 
+
     if (message.length > 0 && roomSelected) {
       socket.connect()
-      if (message.length !== 0)
-      axios.post('http://localhost:3001/sendMessage', {
-        uid: uid,
-        message: message,
-        roomSelected: roomSelected,
-      }).then((response) => {
-          socket.emit("send_message", message);
-          console.log(response.data);
-          setMessage("");
+      if (message.length !== 0) {
+        sendMessage(message, uid);
+        axios.post('http://localhost:3001/sendMessage', {
+          uid: uid,
+          message: message,
+          roomSelected: roomSelected,
+        }).then((response) => {
+            socket.emit("send_message", message);
+            console.log(response.data);
+            setMessage("");
         })
+      }
     } else {
       if (!roomSelected) {
         showNotification({
@@ -95,3 +123,5 @@ export default function ResMessage() {
     </Flex>
   )
 }
+
+export default ResMessage

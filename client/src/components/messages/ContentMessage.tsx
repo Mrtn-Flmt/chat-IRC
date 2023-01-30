@@ -6,13 +6,26 @@ import { useScrollIntoView } from '@mantine/hooks';
 import { Button, Paper, Text } from '@mantine/core';
 
 type Props = {
-	messages: {}
+	messages: {
+		message:string,
+		uid: string
+	}[]
 }
 
-const ContentMessage: FC<Props> = (messages: any) =>  { 
+const ContentMessage: FC<Props> = ({messages}) =>  { 
 	const { scrollIntoView, targetRef, scrollableRef } = useScrollIntoView();
+	const uid = localStorage.getItem('uid');
+	const allMessages = messages;
 
-	const room = localStorage.getItem('roomName') || "Room"
+	function sendMessage(txt:string, uid:string) {
+		const newMessage = {
+			message: txt,
+			uid: uid
+		}
+		allMessages.push(newMessage);
+		console.log(allMessages);
+		return (allMessages)
+	}
 
 	return (
 		<Flex
@@ -29,25 +42,20 @@ const ContentMessage: FC<Props> = (messages: any) =>  {
 			}}>
 				<Flex style={{
 					width:"65%",
-					height:"20%",
-					backgroundColor:"white",
 					justifySelf:"center",
 					alignSelf:"center",
-					marginTop:"10px",
 					justifyContent:"center",
 					alignItems:"center",
 					zIndex:"1",
-					// position:"absolute",
 				}}>
-					<Text size={50}>{room}</Text>
 				</Flex>
 				<Paper ref={scrollableRef} style={{ position: "relative", overflowY: 'scroll', flex: 1, width: "100%", height: "84vh", backgroundColor: "black" }}>
 					<Flex direction="column">
-						<Messages messages={messages} />
+						<Messages messages={allMessages} />
 					</Flex>
 				</Paper>
 			</Flex>
-			<ResMessage />
+			<ResMessage sendMessage={sendMessage} />
 		</Flex>
 	)
 }

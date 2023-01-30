@@ -78,18 +78,19 @@ async function addChannel(title, res) {
     })
 }
 
-app.get('/getMessages', async (req, res) => {
+app.get('/getMessages/:_id', async (req, res) => {
     console.log(`get  all messages`)
-    const messages = await getMessages();
+    console.log(req.params._id + "📀");
+    const messages = await getMessages(req.params._id);
     console.log(messages)
     res.send(messages);
 });
 
-async function getMessages() {
+async function getMessages(_id) {
     await client.connect();
     const db =  client.db('ClusterIRC');
     const collection = db.collection('messages');
-    const cursor = collection.find({});
+    const cursor = collection.find({roomSelected: _id});
     return cursor.toArray();
 }
 
@@ -123,7 +124,7 @@ app.delete('/deleteChannel/:_id', (req, res) => {
     const myid = req.params._id;
     console.log("delete: " + myid);
     deleteChannel(myid)
-    res.send(ok)
+    res.send("ok")
 })
 
 app.post('/register', async (req, res) => {

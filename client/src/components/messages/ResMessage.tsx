@@ -7,13 +7,14 @@ import e from 'express';
 import { showNotification } from '@mantine/notifications';
 
 type Props = {
-  sendMessage:(txt:string, uid:string) => {}
+  sendMessage:(txt:string, uid:string, nickname: string) => {}
 }
 
 const ResMessage: FC<Props> = ({sendMessage}) =>  { 
   const [message, setMessage] = useState("");
   const uid = localStorage.getItem('uid') || "uid";
   const roomSelected = localStorage.getItem('roomSelected');
+  const nickname = localStorage.getItem('nickname');
 
 	const socket = io("http://localhost:3001");
   
@@ -27,7 +28,8 @@ const ResMessage: FC<Props> = ({sendMessage}) =>  {
   function sendButtonClicked() {
     if (message.includes('/nickname')) {
       console.log("nickname set " + message);
-      localStorage.setItem('nickname', message)
+      const newNickname = message.substr(message.indexOf(" ") + 1);
+      localStorage.setItem('nickname', newNickname)
       setMessage("");
       showNotification({
         title: 'Nickname changed',
@@ -47,21 +49,22 @@ const ResMessage: FC<Props> = ({sendMessage}) =>  {
         })
       })
       return
-    } 
-
+    }
     if (message.length > 0 && roomSelected) {
-      socket.connect()
+      // socket.connect()
+      console.log(uid)
       if (message.length !== 0) {
-        sendMessage(message, uid);
+        sendMessage(message, uid, nickname!);
         axios.post('http://localhost:3001/sendMessage', {
           uid: uid,
           message: message,
           roomSelected: roomSelected,
+          nickname: nickname,
         }).then((response) => {
-            socket.emit("send_message", message);
+            // socket.emit("send_message", message);
             console.log(response.data);
-            setMessage("");
-        })
+          })
+          setMessage("");
       }
     } else {
       if (!roomSelected) {

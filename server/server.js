@@ -32,12 +32,16 @@ const io = new Server(server, {
 io.on("connect", (socket) => {
     // console.log(socket.id);
     
-    socket.on('send_message', (data) => {
-        console.log(data);
+    socket.join('roomName', (data) => {
+        console.log(data + "✅🚀");
     })
 
-    socket.on("disconnect", () => {
-        console.log("User disconnected");
+    socket.on('join', room => {
+        
+    })
+
+    socket.on("message", data => {
+        console.log(data);
     })
 });
 
@@ -80,9 +84,8 @@ async function addChannel(title, res) {
 
 app.get('/getMessages/:_id', async (req, res) => {
     console.log(`get  all messages`)
-    console.log(req.params._id + "📀");
     const messages = await getMessages(req.params._id);
-    console.log(messages)
+    // console.log(messages)
     res.send(messages);
 });
 
@@ -135,11 +138,11 @@ app.post('/register', async (req, res) => {
 })
 
 app.post('/sendMessage', (req, res) => {
-    sendMessage(req.body.uid, req.body.message, req.body.roomSelected);
-    res.send("ok")
+    sendMessage(req.body.uid, req.body.message, req.body.roomSelected, req.body.nickname);
+    res.send(res)
 })
 
-async function sendMessage(uid, message, roomSelected) {
+async function sendMessage(uid, message, roomSelected, nickname) {
     await client.connect();
     const db = client.db('ClusterIRC');
     const collection = db.collection('messages');
@@ -148,6 +151,7 @@ async function sendMessage(uid, message, roomSelected) {
             uid: uid,
             message: message,
             roomSelected: roomSelected,
+            nickname: nickname,
         }]).then((data) => {
             console.log(data)
         })

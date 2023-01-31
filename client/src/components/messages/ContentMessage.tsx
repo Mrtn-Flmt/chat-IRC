@@ -8,7 +8,8 @@ import { Button, Paper, Text } from '@mantine/core';
 type Props = {
 	messages: {
 		message:string,
-		uid: string
+		uid: string,
+		nickname: string
 	}[]
 }
 
@@ -17,13 +18,18 @@ const ContentMessage: FC<Props> = ({messages}) =>  {
 	const uid = localStorage.getItem('uid');
 	const allMessages = messages;
 
-	function sendMessage(txt:string, uid:string) {
+	useEffect(() => {
+		const element = document.getElementById("scrollView")!;
+        element.scrollTop = element.scrollHeight;
+	},[allMessages])
+
+	function sendMessage(txt:string, uid:string, nickname: string) {
 		const newMessage = {
 			message: txt,
-			uid: uid
+			uid: uid,
+			nickname: nickname
 		}
 		allMessages.push(newMessage);
-		console.log(allMessages);
 		return (allMessages)
 	}
 
@@ -49,7 +55,7 @@ const ContentMessage: FC<Props> = ({messages}) =>  {
 					zIndex:"1",
 				}}>
 				</Flex>
-				<Paper ref={scrollableRef} style={{ position: "relative", overflowY: 'scroll', flex: 1, width: "100%", height: "84vh", backgroundColor: "black" }}>
+				<Paper id="scrollView" ref={scrollableRef} style={{ position: "relative", overflowY: 'scroll', flex: 1, width: "100%", height: "84vh", backgroundColor: "black" }}>
 					<Flex direction="column">
 						<Messages messages={allMessages} />
 					</Flex>

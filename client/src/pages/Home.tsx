@@ -10,10 +10,11 @@ import { io } from "socket.io-client";
 const Home = () => {
 
   const uid = localStorage.getItem('uid');
+  const nickname = localStorage.getItem('nickname');
   const _id = localStorage.getItem('roomSelected');
 
   const [cards, setCards] = useState<{title: string, _id: string}[]>([])
-  const [messages, setMessages] = useState<{message: string, uid: string}[]>([])
+  const [messages, setMessages] = useState<{message: string, uid: string, nickname: string}[]>([])
   const room = localStorage.getItem('roomName') || "Room"
   const [roomSelected, setRoomSelected] = useState("");
 
@@ -33,9 +34,11 @@ const Home = () => {
       })
   },[_id])
 
-  const setMyRoom = async (_id: string) => {
+  const setRoom = async (_id: string) => {
     localStorage.setItem('roomSelected', _id);
     setRoomSelected(_id);
+    const socket = io("http://localhost:3001")
+    socket.connect()
     await axios.get(`http://localhost:3001/getMessages/${_id}`).then((res) => {
       setMessages(res.data);
     })
@@ -55,7 +58,7 @@ const Home = () => {
           }}>
             <ChanelNagivation
               cards={cards}
-              setRoom={setMyRoom}
+              setRoom={setRoom}
             />
           </Flex>
         </Grid.Col>

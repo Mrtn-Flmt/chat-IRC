@@ -5,33 +5,33 @@ import { Flex, Text } from '@mantine/core'
 type Props = {
   messages: {
     message: string,
-    uid: string
+    uid: string,
+    nickname: string
   }[],
 }
 
 const Messages: FC<Props> = ({messages}) =>  { 
   const roomSelected = localStorage.getItem('roomSelected');
-  // const [allMessages, setMessages] = useState(messages);
   const allMessages = messages
   const myUid = localStorage.getItem('uid');
-  // console.log(allMessages);
-  // messages.forEach(element => {
-  //   console.log(element);
-  // });
   if (roomSelected) {
     return (
       <>
         <Flex direction={"column"} style={{
           height:"75vh"
         }}>
-          {allMessages.map((messages: {message:string; uid:string}) => {
+          {allMessages.map((messages: {message:string; uid:string, nickname: string}) => {
             var who = ""
-            if (messages.uid === myUid)
+            console.log(messages.uid);
+            console.log(myUid);
+            if (messages.uid.toString().includes(myUid!.toString()))
               who = "me";
             else
               who = "you";
+            console.log(who);
+            console.log('\n')
             return (
-              < Message self={who} uid={messages.uid} txt={messages.message} />
+              <Message self={who} uid={messages.uid} txt={messages.message} nickname={messages.nickname} />
             )
           })}
         </Flex>

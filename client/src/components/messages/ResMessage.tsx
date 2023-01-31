@@ -64,6 +64,10 @@ const ResMessage: FC<Props> = ({sendMessage}) =>  {
             // socket.emit("send_message", message);
             console.log(response.data);
           })
+          // socket.connect()
+          socket.emit('message', message, () => {
+            
+          })
           setMessage("");
       }
     } else {

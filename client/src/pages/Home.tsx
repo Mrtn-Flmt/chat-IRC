@@ -6,6 +6,7 @@ import './home.css'
 import ContentMessage from '../components/messages/ContentMessage';
 import axios from 'axios';
 import { io } from "socket.io-client";
+import { useMediaQuery } from '@mantine/hooks';
 
 const Home = () => {
 
@@ -17,6 +18,8 @@ const Home = () => {
   const [messages, setMessages] = useState<{message: string, uid: string, nickname: string}[]>([])
   const room = localStorage.getItem('roomName') || "Room"
   const [roomSelected, setRoomSelected] = useState("");
+
+  const validMediaQuery = useMediaQuery("(max-width: 850px)");
 
   // GET CHANNEL
 
@@ -39,6 +42,12 @@ const Home = () => {
     setRoomSelected(_id);
     const socket = io("http://localhost:3001")
     socket.connect()
+    socket.emit('message', "user joined", () => {
+      
+    })
+    socket.on('user joined', data => {
+      console.log(`l'utilisateur ${data.username} a rejoint la room.`);
+    })
     await axios.get(`http://localhost:3001/getMessages/${_id}`).then((res) => {
       setMessages(res.data);
     })
@@ -48,7 +57,7 @@ const Home = () => {
   return (
     <Flex direction={"column"} style={{backgroundColor:"lightGrey", height:"100vh"}}>
       <Navigation />
-      <Grid style={{margin:0, height:"100%"}}>
+      <Grid style={{margin:0}}>
         <Grid.Col style={{ backgroundColor:"black"}} span={2}>
           <Flex
             gap="md"
@@ -63,7 +72,7 @@ const Home = () => {
           </Flex>
         </Grid.Col>
 
-        <Grid.Col style={{ backgroundColor:"black" }} span={8}>
+        <Grid.Col style={{ backgroundColor:"black" }} span={10}>
           <Flex
             gap="md"
             wrap="wrap"
@@ -77,7 +86,7 @@ const Home = () => {
           </Flex>
         </Grid.Col>
 
-        <Grid.Col style={{ backgroundColor:"black" }} span={2}>
+        {/* <Grid.Col style={{ backgroundColor:"black" }} span={2}>
           <Flex
             gap="md"
             wrap="wrap"
@@ -86,7 +95,7 @@ const Home = () => {
             }}
           >
           </Flex>
-        </Grid.Col>
+        </Grid.Col> */}
       </Grid>
       
     </Flex>

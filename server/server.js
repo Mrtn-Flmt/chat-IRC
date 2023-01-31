@@ -37,11 +37,15 @@ io.on("connect", (socket) => {
     })
 
     socket.on('join', room => {
-        
+        socket.join(room);
+
+        socket.to(room).emit('user joined', {
+            username: socket.id
+        })
     })
 
     socket.on("message", data => {
-        console.log(data);
+        console.log("Socket => " + data);
     })
 });
 

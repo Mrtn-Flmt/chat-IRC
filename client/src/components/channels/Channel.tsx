@@ -17,6 +17,8 @@ const Channel: FC<Props> = ({name, _id, setRoom, deleteRoom}) =>  {
 
     const tmp = _id;
 
+    const socket = io("http://localhost:3001")
+
     function deleteIsClicked() {
         deleteRoom(_id);
     }
@@ -24,6 +26,7 @@ const Channel: FC<Props> = ({name, _id, setRoom, deleteRoom}) =>  {
     function selectIsClicked() {
         console.log(`select: ${_id}   -   ${name}`)
         localStorage.setItem('roomName', name);
+        socket.emit('join', _id);
         setRoom(tmp);
     }
     

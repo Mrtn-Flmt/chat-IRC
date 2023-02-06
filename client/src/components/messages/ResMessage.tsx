@@ -26,6 +26,9 @@ const ResMessage: FC<Props> = ({sendMessage}) =>  {
   // },[socket])
   
   function sendButtonClicked() {
+    
+    // CMD
+    
     if (message.includes('/nickname')) {
       console.log("nickname set " + message);
       const newNickname = message.substr(message.indexOf(" ") + 1);
@@ -50,8 +53,10 @@ const ResMessage: FC<Props> = ({sendMessage}) =>  {
       })
       return
     }
+
+    // SEND MESSAGE
+
     if (message.length > 0 && roomSelected) {
-      // socket.connect()
       console.log(uid)
       if (message.length !== 0) {
         sendMessage(message, uid, nickname!);
@@ -61,20 +66,40 @@ const ResMessage: FC<Props> = ({sendMessage}) =>  {
           roomSelected: roomSelected,
           nickname: nickname,
         }).then((response) => {
-            // socket.emit("send_message", message);
             console.log(response.data);
           })
-          // socket.connect()
           socket.emit('message', message, () => {
             
           })
           setMessage("");
       }
+
     } else {
+
+      // NOTIF 
+
       if (!roomSelected) {
         showNotification({
           title: 'Room inconnue',
           message: 'Veuillez selectionner une room ! 🤥',
+          styles: (theme) => ({
+            root: {
+              backgroundColor: theme.colors.red[6],
+              borderColor: theme.colors.red[6],
+              '&::before': { backgroundColor: theme.white },
+            },
+            title: { color: theme.white },
+            description: { color: theme.white },
+            closeButton: {
+              color: theme.white,
+              '&:hover': { backgroundColor: theme.colors.red[7] },
+            },
+          })
+        })
+      } else if (message.length === 0) {
+        showNotification({
+          title: 'Votre message est vide',
+          message: 'Si vous manquez d inspiration, vous pouvez toujours contacter chatGPT ! 🤥',
           styles: (theme) => ({
             root: {
               backgroundColor: theme.colors.red[6],

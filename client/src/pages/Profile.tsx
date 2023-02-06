@@ -8,26 +8,33 @@ export default function Profile() {
 	const email = localStorage.getItem('email' || "Vous n'avez pas de nom")
 	const uid = localStorage.getItem('uid' || "Vous n'avez pas de nom")
 
-  return (
+	return (
 		<>
-		<Navigation />
-    <Flex direction={"column"} style={{
-			width:"100%",
-			height:"90vh",
-			backgroundColor: "grey",
-			justifyContent:"center",
-			alignItems:"center",
-    }}>
-			<Text>
-				{name}
-			</Text>
-			<Text>
-				{email}
-			</Text>
-			<Text>
-				{uid}
-			</Text>
-    </Flex>
+			<Navigation />
+			<Flex direction={"column"} style={{
+				width: "100%",
+				height: "90vh",
+				backgroundColor: "grey",
+				justifyContent: "center",
+				alignItems: "center",
+			}}>
+				<h3>Nickname</h3>
+				<Text>
+					{name}
+				</Text>
+				<br></br>
+				<br></br>
+				<h3>Adresse mail</h3>
+				<Text>
+					{email}
+				</Text>
+				<br></br>
+				<br></br>
+				<h3>uid</h3>
+				<Text>
+					{uid}
+				</Text>
+			</Flex>
 		</>
-  )
+	)
 }

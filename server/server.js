@@ -32,8 +32,8 @@ const io = new Server(server, {
 io.on("connect", (socket) => {
     // console.log(socket.id);
     
-    socket.join('roomName', (data) => {
-        console.log(data + "✅🚀");
+    socket.join('message', (data) => {
+        console.log("Socket => " + data + "✅🚀");
     })
 
     socket.on('join', room => {

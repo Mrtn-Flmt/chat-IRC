@@ -63,7 +63,7 @@ const Home = () => {
             gap="md"
             wrap="wrap"
             direction={"column"}
-          styles={{
+            styles={{
           }}>
             <ChanelNagivation
               cards={cards}

@@ -12,7 +12,6 @@ type Props = {
 
 const Messages: FC<Props> = ({messages}) =>  { 
   const roomSelected = localStorage.getItem('roomSelected');
-  const allMessages = messages
   const myUid = localStorage.getItem('uid');
   if (roomSelected) {
     return (
@@ -20,7 +19,7 @@ const Messages: FC<Props> = ({messages}) =>  {
         <Flex direction={"column"} style={{
           height:"75vh"
         }}>
-          {allMessages.map((messages: {message:string; uid:string, nickname: string}) => {
+          {messages.map((messages: {message:string; uid:string, nickname: string}) => {
             var who = ""
             console.log(messages.uid);
             console.log(myUid);

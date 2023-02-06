@@ -1,5 +1,5 @@
-import { Button, Flex, TextInput, Title, Checkbox, Box, Group, PasswordInput } from "@mantine/core";
-import { useForm, UseFormReturnType } from '@mantine/form';
+import { Button, Flex, TextInput, Title, Box, Group, PasswordInput } from "@mantine/core";
+import { useForm } from '@mantine/form';
 import React, { useState } from "react";
 import Navigation from './../../components/Navigation';
 import axios from "axios";
@@ -8,8 +8,6 @@ import { showNotification } from "@mantine/notifications";
 import { stringify } from "querystring";
 
 const LoginSystem = () => {
-	const [isAuth, setIsAuth] = useState(false);
-	const [loginStatus, setLoginStatus] = useState("");
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [nickname, setNickname] = useState("");
